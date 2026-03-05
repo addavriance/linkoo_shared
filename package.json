@@ -18,5 +18,8 @@
     "build:types": "tsc --project tsconfig.types.json",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
   }
 }
