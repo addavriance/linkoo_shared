@@ -19,7 +19,11 @@
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build"
   },
+  "dependencies": {
+    "crypto-js": "^4.2.0"
+  },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "typescript": "^5.0.0"
   }
 }
