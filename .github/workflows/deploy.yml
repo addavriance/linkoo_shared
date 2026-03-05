@@ -27,7 +27,7 @@ jobs:
             
             echo "🚀 Building shared-utils..."
             
-            cd /home/${{ secrets.SERVER_USER }}/shared-utils
+            cd /home/${{ secrets.SERVER_USER }}/linkoo_shared
             
             git pull origin main
             
