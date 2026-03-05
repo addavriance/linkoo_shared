@@ -1,0 +1,41 @@
+name: Build and Link Shared Utils
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-link:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_CLIENT_SECRET }}
+          tags: tag:ci
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_TAILSCALE_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            
+            echo "🚀 Building shared-utils..."
+            
+            cd /home/${{ secrets.SERVER_USER }}/shared-utils
+            
+            git pull origin main
+            
+            npm ci
+            npm run build
+            
+            npm link
+            
+            echo "✅ shared-utils built and linked globally"
+            
+            npm ls -g --depth=0
