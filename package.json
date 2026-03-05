@@ -1,25 +1,22 @@
 {
   "name": "@local/linkoo_shared",
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:types",
+    "build:esm": "tsc --project tsconfig.esm.json",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:types": "tsc --project tsconfig.types.json",
     "clean": "rm -rf dist",
-    "prebuild": "npm run clean",
-    "link": "npm link"
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "devDependencies": {
-    "typescript": "^4.9.0",
-    "@types/node": "^18.0.0"
-  },
-  "dependencies": {
-    "crypto-js": "^4.1.1",
-    "@types/crypto-js": "^4.1.1"
+    "prepublishOnly": "npm run build"
   }
 }
