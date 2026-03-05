@@ -58,15 +58,6 @@ export class TOTPGenerator {
             }
         }
 
-        // Проверяем следующий интервал (на случай рассинхронизации времени)
-        // const nextIntervalCode = this.generateCodeForInterval(uid, currentInterval + 1);
-        // if (nextIntervalCode === code) {
-        //     return {
-        //         valid: true,
-        //         usedInterval: currentInterval + 1
-        //     };
-        // }
-
         return {
             valid: false,
             reason: 'Invalid code'
