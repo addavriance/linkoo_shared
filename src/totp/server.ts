@@ -36,13 +36,13 @@ export class ServerTOTPValidator {
             };
         }
 
-        if (this.isCodeUsed(uid, code)) {
-            return {
-                isValid: false,
-                reason: 'Code already used',
-                serverTime: Date.now()
-            };
-        }
+        // if (this.isCodeUsed(uid, code)) {
+        //     return {
+        //         isValid: false,
+        //         reason: 'Code already used',
+        //         serverTime: Date.now()
+        //     };
+        // }
 
         const verification = this.generator.verifyCode(uid, code, timestamp);
 

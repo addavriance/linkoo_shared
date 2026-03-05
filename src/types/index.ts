@@ -1,27 +1,37 @@
-export interface TOTPConfig {
-    codeLength?: number;
-    intervalSeconds?: number;
-    allowedDrift?: number;
-    secretSalt?: string;
-}
+export * from './totp';
 
-export interface TOTPResult {
-    code: string;
-    timestamp: number;
-    interval: number;
-    expiresAt: number;
-}
+export type OAuthProvider = 'google' | 'vk' | 'discord' | 'github' | 'max';
+export type AccountType = 'free' | 'paid';
+export type UserRole = 'user' | 'moderator' | 'admin';
 
-export interface ValidationRequest {
-    uid: string;
-    code: string;
-    timestamp?: number;
-}
+export type SocialPlatform =
+    | 'telegram'
+    | 'whatsapp'
+    | 'instagram'
+    | 'youtube'
+    | 'linkedin'
+    | 'twitter'
+    | 'facebook'
+    | 'github'
+    | 'tiktok'
+    | 'discord'
+    | 'vk'
+    | 'custom';
 
-export interface ValidationResult {
-    isValid: boolean;
-    userId?: string;
-    reason?: string;
-    serverTime?: number;
-}
+export type LinkTargetType = 'url' | 'card';
 
+export interface ApiResponse<T = unknown> {
+    success: boolean;
+    data?: T;
+    error?: {
+        message: string;
+        code: number;
+        details?: unknown;
+    };
+    meta?: {
+        page?: number;
+        limit?: number;
+        total?: number;
+        totalPages?: number;
+    };
+}
