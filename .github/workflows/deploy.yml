@@ -2,7 +2,7 @@ name: Build and Link Shared Utils
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   build-and-link:
