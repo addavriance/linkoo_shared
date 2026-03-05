@@ -2,7 +2,7 @@ name: Build and Link Shared Utils
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   build-and-link:
@@ -25,13 +25,18 @@ jobs:
           script: |
             set -e
             
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
+            nvm use 20 || nvm install 20
+            
             echo "🚀 Building shared-utils..."
             
-            cd /home/${{ secrets.SERVER_USER }}/shared-utils
+            cd /home/${{ secrets.SERVER_USER }}/linkoo_shared
             
-            git pull origin main
+            git pull origin master
             
-            npm ci
+            npm install
             npm run build
             
             npm link
