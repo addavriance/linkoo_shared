@@ -1,12 +1,15 @@
-name: Build and Link Shared Utils
+name: Publish to GitHub Packages
 
 on:
   push:
     branches: [master]
 
 jobs:
-  build-and-link:
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Record start time
@@ -23,37 +26,24 @@ jobs:
           message: |
             ${{ github.event.head_commit.author.name }} pushed to branch <a href="${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}">${{ github.ref_name }}</a> of <a href="${{ github.server_url }}/${{ github.repository }}">linkoo_shared</a> (<a href="${{ github.event.compare }}">Compare changes</a>)
 
-      - name: Connect to Tailscale
-        uses: tailscale/github-action@v2
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_CLIENT_SECRET }}
-          tags: tag:ci
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@adda'
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_TAILSCALE_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            set -e
+      - name: Install dependencies
+        run: npm install
 
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      - name: Build
+        run: npm run build
 
-            nvm use 20 || nvm install 20
-
-            cd /home/${{ secrets.SERVER_USER }}/linkoo_shared
-
-            git fetch origin master
-            git reset --hard origin/master
-            git clean -fd
-
-            npm install
-            npm run build
-
-            npm link
+      - name: Publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Calculate duration
         id: duration

@@ -1,5 +1,5 @@
 {
-  "name": "@local/linkoo_shared",
+  "name": "@adda/linkoo_shared",
   "version": "1.0.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -27,5 +27,8 @@
     "@types/crypto-js": "^4.2.2",
     "@types/lz-string": "^1.5.0",
     "typescript": "^5.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }
